@@ -1,8 +1,8 @@
-# JanitorAI Script Builder (BETA 2)
+# JanitorAI Script Builder (BETA 3)
 
 **Live tools (GitHub Pages):**
 
-**Main generator (BETA 2):** https://mellowflloww.github.io/JanitorAI-Script-Builder/
+**Main generator (BETA 3):** https://mellowflloww.github.io/JanitorAI-Script-Builder/
 
 No-code advanced scripts for JanitorAI.
 Fill out simple forms → get copy-paste-ready JavaScript. No JS knowledge needed.
