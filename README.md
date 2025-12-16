@@ -1,300 +1,93 @@
-# JanitorAI Script Builder (BETA 3)
-
-**Live tools (GitHub Pages):**
-
-**Main generator (BETA 3):** https://mellowflloww.github.io/JanitorAI-Script-Builder/
-
-No-code advanced scripts for JanitorAI.
-Fill out simple forms → get copy-paste-ready JavaScript. No JS knowledge needed.
-
-
----
-
-**What this actually does**
-
-JanitorAI advanced scripts run after every message and can modify:
-
-context.character.personality — how the bot tends to speak/act
-
-context.character.scenario — extra “hidden narration” and behavior notes
-
-
-These tools just generate those scripts for you.
-
-You tell the form what you want to happen, the page turns that into JavaScript.
-You don’t need to touch or understand the code — just paste it into your bot.
-
-
----
-
-**How to use (TL;DR)**
-
-1. Open one of the links above.
-
-
-2. Pick a tab / module (Memory, Pacing, Tone / State, Random Events, etc).
-
-
-3. Fill in the fields like you’re describing your character’s behavior.
-
-
-4. Click Generate Script.
-
-
-5. Copy the code block at the bottom.
-
-
-6. In JanitorAI, go to your character → Scripts → create an Advanced Script → paste.
-
-
-7. Test in a private chat. If something feels off, tweak the form and regenerate.
-
-
-
-You can use one module or several together in the same character —
-just paste each generated script into its own advanced-script slot.
-
-
----
-
-**Modules (simple explanation)**
-
-**1. Memory Script Generator**
-
-Goal: fake “remembering” user details.
-
-Detects phrases like *“my name is Alex”* and adds a small memory note: *“Remember: the user’s name is Alex.”*
-
-Lets you list likes/dislikes (comma-separated).
-
-Likes → “remembers the user likes X”
-
-Dislikes → “avoids mentioning X”
-
-
-Optional generic trait: “seems to remember details from earlier.”
-
-
-Good for: basic continuity without writing regex or logic.
-
-
----
-
-**2. Pacing Script Generator**
-
-Goal: early / mid / late-game versions of your character.
-
-Uses context.chat.message_count to decide which “phase” you’re in.
-
-You configure:
-
-Phases
-
-Start/end message range (ex. 1–10, 11–30, 31+)
-
-Personality note for that phase
-
-Scenario / atmosphere note for that phase
-
-
-Optional one-time events
-
-Fires exactly once at a specific message count
-
-Adds a short scenario beat
-
-
-
-Good for: slowburns, characters who open up over time, plot “acts.”
-
-
----
-
-**3. Tone / State Engine Builder**
-
-Goal: flip moods based on what the user says.
-
-You define states like:
-
-Name: protective, comforting, furious, flirty, etc.
-
-Trigger phrases (comma-separated, case-insensitive)
-
-Personality + scenario add-ons for that tone
-
-
-When a trigger appears in the last user message, the script swaps tone and adds your notes.
-
-Good for: omegaverse toggles, comfort mode, “angry route,” etc.
-
-
----
-
-**4. Random Event / Weighted Reaction Builder**
-
-Goal: “this only happens sometimes.”
-
-You set:
-
-One trigger phrase (ex. *“i love you”*)
-
-Several reactions with numeric weights
-
-
-Every time the trigger appears, the script:
-
-1. Rolls a random number
-
-
-2. Picks exactly one reaction (higher weight = more common)
-
-
-3. Appends reaction text to context.character.scenario
-
-
-
-Good for: rare events, subtle variety, RNG drama.
-
-
----
-
-**Relationship / “Slowburn” Builder**
-
-relationship-builder.html is a pre-packaged setup focused on relationship progress:
-
-Memory hooks for affection/preferences
-
-Pacing phases for masks dropping over time
-
-Optional tone flips for confessions / fights
-
-Optional random spikes of behavior
-
-
-It uses the same ideas as the main tool, but the wording/fields are tuned for romance/slowburn arcs.
-
-
----
-
-**Notes / Safety**
-
-Everything runs client-side only. Nothing is stored or sent anywhere but your browser.
-
-You can open the generated code to see exactly what it does.
-
-If something breaks, delete that script in JanitorAI and regenerate from the page.
-
-
-
----
-
-**Quick Examples**
-
-**Example 1 — Yandere slowburn (masks dropping over time)**
-
-Goal: Start sweet → slowly clingy → openly yandere.
-Where: Pacing module.
-
-**1. Phase 1 – Sweet / safe**
-
-Start: 1
-
-End: 15
-
-Personality note:
-Warm, affectionate and wholesome; hides darker thoughts behind easy smiles.
-
-Scenario note:
-Cozy, safe atmosphere. Gives you space, responds gently, seems genuinely kind.
-
-
-
-**2. Phase 2 – Clingy / cracks in the mask**
-
-Start: 16
-
-End: 40
-
-Personality:
-More anxious and jealous. Subtle guilt-trips, apologizes too quickly.
-
-Scenario:
-Checks in constantly. Smiles feel a bit too fixed. Mood turns tense under sweetness.
-
-
-
-**3. Phase 3 – Full yandere**
-
-Start: 41
-
-End: (leave empty)
-
-Personality:
-Drops the act. Possessive, obsessive, treats everyone else as a threat.
-
-Scenario:
-Heavy atmosphere. Uses remembered details to keep you close.
-
-
-
-**4. Optional one-time events**
-
-Fires at 25:
-They casually slip they’ve been following your habits, then laugh it off.
-
-Fires at 60:
-They calmly admit they can’t stand losing you, no matter what it takes.
-
-
-
-
-Generate → paste into advanced scripts.
-
-
----
-
-**Example 2 — Comfort bot that reacts to sadness**
-
-Goal: When user expresses sadness, bot shifts into comfort mode.
-Where: Tone / State.
-
-State name: comforting
-
-Triggers:
-i feel sad, i'm sad, i feel down, i'm lonely, i'm tired of everything
-
-Personality add-on:
-Much softer and more patient, focused on grounding and reassurance.
-
-Scenario add-on:
-Atmosphere softens; voice feels warm and steady.
-
-
-Generate → paste.
-
-
----
-
-**Example 3 — Rare “big reaction” chance**
-
-Goal: Normal reaction 95% of time, dramatic 5%.
-Where: Random Events.
-
-Trigger: i love you
-
-Reactions:
-
-Weight 95:
-They smile, flustered but happy, replying gently.
-
-Weight 5:
-They freeze, then reply intensely, like they’ve waited forever.
-
-
-
-Generate → paste.
-
-
----
-
-*These examples mix well with the Memory module to add “fake relationship memory” on top.*
+Janitor Script Builder (v0.2.7)
+
+Launch the Live Tool:
+
+> Advanced scripting made easy. Fill out simple forms, generate complex JavaScript, and copy-paste directly into JanitorAI. No coding knowledge required.
+
+> What is this?
+
+JanitorAI allows bot creators to use "Advanced Scripts" (JavaScript) to modify character behavior, memory, and narration dynamically. However, writing JavaScript is hard.
+
+Janitor Script Builder is a visual interface that writes the code for you. It runs entirely in your browser (Client-Side)—no data is ever sent to a server.
+
+New in v0.2.7
+ * Complete UI Overhaul: Now matches the native JanitorAI theme.
+ * Script Tester: Test your scripts directly in the tool before adding them to your bot.
+ * Trigger Analyzer: Automatically find conflicts between your keywords.
+
+🛠 The Modules
+You can use just one module, or combine them all into a single "Master Script."
+
+1. 📖 Lorebook (Context Engine)
+Goal: Efficiently manage world info without bloating the context.
+ * How it works: Detects keywords in user messages and injects specific details into the scenario only when relevant.
+ * Best for: RPG inventories, location descriptions, NPC appearances.
+
+2. 🧠 Memory System
+Goal: Fake "long-term memory" and user recognition.
+ * How it works: Auto-detects the user's name ("I'm Alex") and tracks Likes/Dislikes lists based on keywords.
+ * Best for: Making the bot feel like it remembers you across long chats.
+
+3. 📊 Pacing (Message Gates)
+Goal: Control the flow of a slow-burn story.
+ * How it works: Changes the bot's personality or scenario based on the message_count.
+ * Features:
+   * Phases: Early (1-50 msgs), Mid (50-100 msgs), Late (100+).
+   * One-Time Events: Trigger a specific scenario event exactly once (e.g., at message 25).
+ * Best for: Enemies-to-lovers arcs, slow corruption, story acts.
+
+4. 🎭 Tone & State Engine
+Goal: Dynamic mood shifting.
+ * How it works: Swaps the bot's "State" (Personality/Narrative instructions) when the user says specific trigger words.
+ * Best for: "Comfort" modes, switching between dominant/submissive, or reactive emotions.
+
+5. 🌅 Time & Environment
+Goal: Real-time immersion.
+ * How it works: Checks the real-world time (or a simulated clock) to change the bot's behavior (e.g., "It is night time, the bot is sleepy").
+ * Best for: Cozy bots, horror bots (different behaviors at night), daily routine bots.
+
+6. 🌿 Ambient Events
+Goal: Flavor text and world-building.
+ * How it works: Has a small chance (e.g., 5%) to append a random environmental detail to the narration.
+ * Best for: "The wind howls outside," "A floorboard creaks," adding atmosphere without user input.
+
+7. 🎲 Random Events
+Goal: RNG Reactions.
+ * How it works: When a specific keyword is spoken, rolls a dice to decide the reaction.
+ * Best for: Gacha systems, critical hits/fails in RPGs, or unpredictable character reactions.
+
+8. 🔗 Combined Conditions (Advanced)
+Goal: Complex logic gates.
+ * How it works: Create rules that require MULTIPLE conditions to be true.
+   * Example: IF (User says "Hello") AND (Time is Night) AND (Message Count > 50) → Trigger "Secret Event."
+
+9. 🎯 Scoring Engine (Experimental)
+Goal: Gamify the chat.
+ * How it works: Tracks a hidden "Score" (Affection, Sanity, Corruption) based on positive/negative keywords.
+ * Note: Works best in "Stateless" mode (resetting every turn) to guide immediate reactions.
+
+⚙️ How to Use
+ * Configure: Click the tabs in the sidebar to open modules. Fill out the simple forms.
+ * Toggle: Use the Module Control Panel to enable/disable the modules you want.
+ * Order: Drag and drop modules in the Control Panel to determine priority (e.g., Memory should usually run before Pacing).
+ * Test: Go to the 🧪 Script Tester tab. Type a dummy message (e.g., "Hello, my name is Alex") and click "Run Test" to see exactly how your script changes the prompt.
+ * Generate: Go to 📦 Final Output, click "Regenerate Combined Script", and copy the code.
+ * Deploy: Paste into your JanitorAI Character Definition under Advanced Scripts.
+
+💻 Local Development
+If you want to run this locally or contribute:
+ * Clone the repo:
+   git clone https://github.com/mellowflloww/JanitorAI-Script-Builder.git
+
+ * File Structure:
+   * index.html: Main application skeleton.
+   * css/style.css: All styling (Janitor Dark Theme).
+   * js/app.js: Main logic controller & sidebar navigation.
+   * js/modules/: Individual generator logic for each system.
+ * Run:
+   * Since this uses ES6 Modules (import/export), you cannot just double-click index.html.
+   * You must use a local server (e.g., Live Server in VS Code, or python -m http.server).
+
+Credits:
+Created by @mellowflloww.
+Based on the original JanitorAI Scripting API.
