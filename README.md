@@ -1,6 +1,6 @@
 Janitor Script Builder (v0.2.7)
 
-Launch the Live Tool:
+Launch the Live Tool: https://mellowflloww.github.io/JanitorAI-Script-Builder/
 
 > Advanced scripting made easy. Fill out simple forms, generate complex JavaScript, and copy-paste directly into JanitorAI. No coding knowledge required.
 
