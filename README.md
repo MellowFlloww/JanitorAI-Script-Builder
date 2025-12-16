@@ -89,5 +89,5 @@ If you want to run this locally or contribute:
    * You must use a local server (e.g., Live Server in VS Code, or python -m http.server).
 
 Credits:
-Created by @mellowflloww.
+Created by @mellowfllow.
 Based on the original JanitorAI Scripting API.
