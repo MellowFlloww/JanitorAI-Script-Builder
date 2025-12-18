@@ -37,92 +37,62 @@ import {
 } from './tools/tester.js';
 
 // ============================================
-// PRESET LOADER
+// INPUT VALIDATION HELPERS
 // ============================================
 
-function loadPreset(presetName) {
-  if (presetName === 'slowburn') {
-    document.getElementById('memNamePhrase').value = 'my name is';
-    document.getElementById('memFactsKeywords').value = 'fact, i am, i work as';
-    document.getElementById('memLikesKeywords').value = 'i like, i love, favorite';
-    document.getElementById('memDislikesKeywords').value = 'i hate, i dislike';
+/**
+ * Checks if the last entry in a container is valid (has content).
+ * Flashes empty fields red if invalid.
+ */
+function validateContainer(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container || container.children.length === 0) return true;
 
-    document.getElementById('pacingPhases').innerHTML = '';
-    addPacingPhase();
-    var phases = document.querySelectorAll('#pacingPhases .dynamic-item');
-    phases[0].querySelector('input[placeholder="Min messages"]').value = '1';
-    phases[0].querySelector('input[placeholder="Max messages"]').value = '15';
-    phases[0].querySelector('textarea').value = '{{char}} is cautious and formal, still getting to know {{user}}.';
+  const lastEntry = container.lastElementChild;
+  // Find required inputs (text, number, textarea)
+  const inputs = lastEntry.querySelectorAll('input[type="text"], input[type="number"], textarea, select');
 
-    addPacingPhase();
-    phases = document.querySelectorAll('#pacingPhases .dynamic-item');
-    phases[1].querySelector('input[placeholder="Min messages"]').value = '16';
-    phases[1].querySelector('input[placeholder="Max messages"]').value = '40';
-    phases[1].querySelector('textarea').value = '{{char}} is warming up, showing more genuine interest.';
+  let isValid = true;
+  inputs.forEach(input => {
+    // Skip optional fields if needed, but generally check for non-empty
+    if (!input.value.trim()) {
+      isValid = false;
+      input.classList.add('flash-red');
+      setTimeout(() => input.classList.remove('flash-red'), 600);
+    }
+  });
 
-    addPacingPhase();
-    phases = document.querySelectorAll('#pacingPhases .dynamic-item');
-    phases[2].querySelector('input[placeholder="Min messages"]').value = '41';
-    phases[2].querySelector('input[placeholder="Max messages"]').value = '999';
-    phases[2].querySelector('textarea').value = '{{char}} feels comfortable and open, deeply engaged.';
+  return isValid;
+}
 
-    showToast('Slow-Burn Romance preset loaded! Check Memory and Pacing sections.', 'success');
-    document.getElementById('memory').scrollIntoView({ behavior: 'smooth', block: 'start' });
+/**
+ * Flashes the newly added entry green.
+ */
+function flashNewEntry(containerId) {
+  // Wait 1 tick for the DOM to update
+  setTimeout(() => {
+    const container = document.getElementById(containerId);
+    if (container && container.lastElementChild) {
+      container.lastElementChild.classList.add('flash-green');
+      setTimeout(() => container.lastElementChild.classList.remove('flash-green'), 600);
+    }
+  }, 10);
+}
 
-  } else if (presetName === 'rpg') {
-    document.getElementById('loreEntries').innerHTML = '';
-    addLoreEntry();
-    var entries = document.querySelectorAll('#loreEntries .dynamic-item');
-    entries[0].querySelector('select').value = 'people';
-    entries[0].querySelector('input[placeholder="Keywords (comma-separated)"]').value = 'blacksmith, forge';
-    entries[0].querySelector('textarea').value = 'The blacksmith Gareth runs the forge. He is gruff but fair, known for masterwork weapons.';
-
-    addLoreEntry();
-    entries = document.querySelectorAll('#loreEntries .dynamic-item');
-    entries[1].querySelector('select').value = 'places';
-    entries[1].querySelector('input[placeholder="Keywords (comma-separated)"]').value = 'tavern, inn';
-    entries[1].querySelector('textarea').value = 'The Rusty Tankard tavern is a cozy refuge, always filled with adventurers and rumors.';
-
-    addLoreEntry();
-    entries = document.querySelectorAll('#loreEntries .dynamic-item');
-    entries[2].querySelector('select').value = 'events';
-    entries[2].querySelector('input[placeholder="Keywords (comma-separated)"]').value = 'festival, celebration';
-    entries[2].querySelector('textarea').value = 'The annual Harvest Festival brings music, dancing, and competitions to the town square.';
-
-    showToast('RPG Adventure preset loaded! Check Lorebook section.', 'success');
-    document.getElementById('lorebook').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  } else if (presetName === 'ambient') {
-    document.getElementById('ambientEvents').innerHTML = '';
-    addAmbientEvent();
-    var events = document.querySelectorAll('#ambientEvents .dynamic-item');
-    events[0].querySelector('textarea').value = 'A gentle breeze rustles the curtains.';
-
-    addAmbientEvent();
-    events = document.querySelectorAll('#ambientEvents .dynamic-item');
-    events[1].querySelector('textarea').value = 'The faint sound of traffic hums in the distance.';
-
-    addAmbientEvent();
-    events = document.querySelectorAll('#ambientEvents .dynamic-item');
-    events[2].querySelector('textarea').value = 'Sunlight filters through the window, casting warm patterns.';
-
-    addAmbientEvent();
-    events = document.querySelectorAll('#ambientEvents .dynamic-item');
-    events[3].querySelector('textarea').value = 'The smell of fresh coffee lingers in the air.';
-
-    document.getElementById('ambientProbability').value = '15';
-
-    showToast('Ambient Flavor Pack preset loaded! Check Ambient Events section.', 'success');
-    document.getElementById('ambient').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  } else if (presetName === 'memory') {
-    document.getElementById('memNamePhrase').value = 'my name is';
-    document.getElementById('memFactsKeywords').value = 'fact, i am, i work, i study';
-    document.getElementById('memLikesKeywords').value = 'i like, i love, i enjoy';
-    document.getElementById('memDislikesKeywords').value = 'i hate, i dislike, i don\'t like';
-
-    showToast('Memory Starter preset loaded! Check Memory section.', 'success');
-    document.getElementById('memory').scrollIntoView({ behavior: 'smooth', block: 'start' });
+/**
+ * Wraps an add function with validation.
+ * If the last entry is invalid, flashes red and stops.
+ * If valid, adds a new entry and flashes it green.
+ */
+function attachValidatedAdd(btnId, containerId, addFn) {
+  const btn = document.getElementById(btnId);
+  if (btn) {
+    btn.addEventListener('click', function() {
+      if (validateContainer(containerId)) {
+        addFn();
+        flashNewEntry(containerId);
+      }
+    });
   }
 }
 
@@ -511,29 +481,24 @@ function setupEventListeners() {
     });
   });
 
-  // Preset cards
-  document.querySelectorAll('.preset-card[data-preset]').forEach(function(card) {
-    card.addEventListener('click', function() {
-      var presetName = this.getAttribute('data-preset');
-      loadPreset(presetName);
-    });
-  });
-
   // Module control panel buttons
   document.getElementById('btnCopyAllModules')?.addEventListener('click', generateFinalCombinedScript);
   document.getElementById('btnGenerateAllModules')?.addEventListener('click', generateAllEnabledModules);
   document.getElementById('btnResetAll')?.addEventListener('click', resetAllFields);
 
-  // Add entry buttons
-  document.getElementById('btnAddLoreEntry')?.addEventListener('click', addLoreEntry);
-  document.getElementById('btnAddPacingPhase')?.addEventListener('click', addPacingPhase);
-  document.getElementById('btnAddOneTimeEvent')?.addEventListener('click', addOneTimeEvent);
-  document.getElementById('btnAddToneTrigger')?.addEventListener('click', addToneTrigger);
-  document.getElementById('btnAddTimeSlot')?.addEventListener('click', addTimeSlot);
-  document.getElementById('btnAddAmbientEvent')?.addEventListener('click', addAmbientEvent);
-  document.getElementById('btnAddRandomEvent')?.addEventListener('click', addRandomEvent);
-  document.getElementById('btnAddCombinedRule')?.addEventListener('click', addCombinedRule);
-  document.getElementById('btnAddScoreThreshold')?.addEventListener('click', addScoreThreshold);
+  // Add entry buttons with validation wrapper
+  attachValidatedAdd('btnAddLoreEntry', 'loreEntries', addLoreEntry);
+  attachValidatedAdd('btnAddPacingPhase', 'pacingPhases', addPacingPhase);
+  attachValidatedAdd('btnAddOneTimeEvent', 'oneTimeEvents', addOneTimeEvent);
+  attachValidatedAdd('btnAddToneTrigger', 'toneTriggers', addToneTrigger);
+  attachValidatedAdd('btnAddTimeSlot', 'timeSlots', addTimeSlot);
+  attachValidatedAdd('btnAddAmbientEvent', 'ambientEvents', addAmbientEvent);
+  attachValidatedAdd('btnAddRandomEvent', 'randomEvents', addRandomEvent);
+  attachValidatedAdd('btnAddCombinedRule', 'combinedRules', addCombinedRule);
+  attachValidatedAdd('btnAddScoreThreshold', 'scoreThresholds', addScoreThreshold);
+
+  // Batch test messages
+  attachValidatedAdd('btnAddBatchMessage', 'batchTestMessages', addBatchTestMessage);
 
   // Generate script buttons
   document.getElementById('btnGenerateLorebook')?.addEventListener('click', generateLorebookScript);
@@ -565,7 +530,6 @@ function setupEventListeners() {
   document.getElementById('btnClearTestResults')?.addEventListener('click', clearTestResults);
   document.getElementById('btnRunBatchTests')?.addEventListener('click', runBatchTests);
   document.getElementById('btnClearBatchResults')?.addEventListener('click', clearBatchResults);
-  document.getElementById('btnAddBatchMessage')?.addEventListener('click', addBatchTestMessage);
   document.getElementById('btnClearBatchMessages')?.addEventListener('click', clearBatchMessages);
 }
 
@@ -623,7 +587,6 @@ document.addEventListener('DOMContentLoaded', function () {
 // ============================================
 
 window.copyToClipboard = copyToClipboard;
-window.loadPreset = loadPreset;
 window.resetAllFields = resetAllFields;
 window.generateAllEnabledModules = generateAllEnabledModules;
 window.generateFinalCombinedScript = generateFinalCombinedScript;
