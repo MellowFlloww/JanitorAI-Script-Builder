@@ -1220,46 +1220,6 @@ body {
 }
 
 /* ============================================
- * PRESET GRID
- * ============================================ */
-.preset-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.preset-card {
-  background: var(--colour-grey-700);
-  border: 2px solid var(--scripts-border-color);
-  border-radius: 10px;
-  padding: 1.25rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.preset-card:hover {
-  border-color: var(--colour-pink-500);
-  background: var(--colour-grey-600);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(247, 134, 244, 0.15);
-}
-
-.preset-card h4 {
-  margin: 0 0 0.5rem 0;
-  font-family: var(--font-family-jura);
-  font-size: var(--fontsize-body-md);
-  color: var(--colour-pink-400);
-}
-
-.preset-card p {
-  margin: 0;
-  font-family: var(--font-family-jura);
-  font-size: var(--fontsize-body-ty);
-  color: var(--white-60);
-}
-
-/* ============================================
  * DYNAMIC LIST
  * ============================================ */
 .dynamic-list {
@@ -1267,9 +1227,8 @@ body {
   border-radius: 8px;
   padding: 1rem;
   margin-top: 0.75rem;
-  max-height: 350px;
-  overflow-y: auto;
   background: var(--colour-grey-800);
+  /* No max-height - allow natural expansion so main page scrolls */
 }
 
 /* Hide empty dynamic lists to prevent black bar bug */
@@ -1767,10 +1726,6 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .preset-grid {
-    grid-template-columns: 1fr;
-  }
-
   .card {
     padding: 1rem;
   }
@@ -1940,4 +1895,183 @@ body {
 .shell {
   max-width: 100%;
   margin: 0;
+}
+
+/* ============================================
+ * JANITOR SMART CARD - Vertical Card Layout
+ * ============================================ */
+.janitor-card-entry {
+  background: #2f3136;
+  border: 1px solid var(--scripts-border-color);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.janitor-card-entry:last-child {
+  margin-bottom: 0;
+}
+
+.card-header-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.card-header-grid .meta-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-header-grid .meta-field label {
+  font-family: var(--font-family-jura);
+  font-size: var(--fontsize-body-ty);
+  font-weight: var(--font-weight-semibold);
+  color: var(--white-70);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-header-grid .janitor-input {
+  width: 100%;
+}
+
+.btn-remove-icon {
+  background: var(--danger);
+  color: var(--white-100);
+  border: none;
+  border-radius: 6px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.btn-remove-icon:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body > label {
+  font-family: var(--font-family-jura);
+  font-size: var(--fontsize-body-ty);
+  font-weight: var(--font-weight-semibold);
+  color: var(--white-70);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.field-subtext {
+  font-family: var(--font-family-jura);
+  font-size: var(--fontsize-body-ty);
+  color: var(--white-50);
+  margin: 0 0 8px 0;
+  font-style: italic;
+}
+
+.card-body .janitor-input.auto-expand {
+  min-height: 150px;
+  height: auto;
+  resize: vertical;
+}
+
+/* Force larger starting size for card content textareas */
+.janitor-card-entry .card-body textarea {
+  min-height: 150px !important;
+  max-height: 500px !important;  /* Stop growing at 500px */
+  overflow-y: auto !important;   /* Show scrollbar when full */
+  height: auto;
+  resize: vertical;
+}
+
+.card-body > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Multi-field cards (e.g., Pacing with min/max inputs) */
+.card-header-grid.multi-field {
+  grid-template-columns: 1fr 1fr auto;
+}
+
+/* Keywords field for cards that need it */
+.card-keywords {
+  margin-bottom: 16px;
+}
+
+.card-keywords label {
+  display: block;
+  font-family: var(--font-family-jura);
+  font-size: var(--fontsize-body-ty);
+  font-weight: var(--font-weight-semibold);
+  color: var(--white-70);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+/* Responsive adjustments for Smart Cards */
+@media (max-width: 768px) {
+  .card-header-grid {
+    grid-template-columns: 1fr auto !important;
+    gap: 8px;
+    align-items: flex-end !important;
+  }
+
+  .card-header-grid.multi-field {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .btn-remove-icon {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .janitor-card-entry {
+    padding: 12px;
+  }
+
+  .card-header-grid.multi-field {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
+ * VALIDATION ANIMATIONS
+ * ============================================ */
+@keyframes flash-green {
+  0% { border-color: var(--success); box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.4); }
+  100% { border-color: var(--scripts-border-color); box-shadow: none; }
+}
+
+@keyframes flash-red {
+  0% { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.4); }
+  100% { border-color: var(--scripts-border-color); box-shadow: none; }
+}
+
+/* Apply to the whole card on success */
+.janitor-card-entry.flash-green {
+  animation: flash-green 0.6s ease-out;
+}
+
+/* Apply to specific inputs on error */
+input.flash-red,
+textarea.flash-red,
+select.flash-red {
+  animation: flash-red 0.6s ease-out;
 }
