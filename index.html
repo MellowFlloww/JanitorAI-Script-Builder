@@ -92,6 +92,11 @@
   <!-- Main Content -->
   <main class="janitor-main">
     <div class="janitor-content shell">
+      <!-- Help Button (Top Right) -->
+      <div class="header-help-container">
+        <button id="btnHelpTrigger" class="btn-help-trigger" title="User Guide">?</button>
+      </div>
+
       <!-- Header Banner -->
       <div class="header-banner-wrap">
         <img class="header-logo" src="logo2x-1_ia066y.png" alt="Janitor AI Logo">
@@ -864,6 +869,136 @@
 
     </div>
   </main>
+</div>
+
+<!-- Help Modal -->
+<div id="helpModal" class="janitor-modal-backdrop">
+  <div class="janitor-modal-content">
+    <div class="janitor-modal-header">
+      <h3 class="janitor-modal-title">User Guide</h3>
+      <button id="btnHelpClose" class="btn-modal-close" title="Close">&times;</button>
+    </div>
+    <div class="janitor-modal-body">
+      <div class="guide-container">
+        <h1 class="guide-title">JanitorAI Script Builder</h1>
+        <p class="guide-subtitle">User Manual & Configuration Guide</p>
+
+        <div class="guide-section">
+          <h2>1. Core Concepts</h2>
+          <h3>Stateless Execution</h3>
+          <p>JanitorAI scripts run fresh on every message. They do not "remember" variables between turns. This tool builds <strong>Stateless Logic</strong> that re-scans the chat history every time to simulate memory.</p>
+
+          <div class="janitor-card">
+            <strong>The "Runtime Injection" Rule</strong>
+            <p>Scripts cannot permanently save data to the character's definition. Instead, they inject data into the context <em>temporarily</em> for the current reply only.</p>
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <h2>2. Module Configuration</h2>
+
+          <h3>Lorebook (World Info)</h3>
+          <p>Injects descriptions when specific words are mentioned.</p>
+          <div class="janitor-card">
+            <strong>Configuration Steps:</strong>
+            <ol>
+              <li><strong>Type:</strong> Select a category (e.g., <em>Places</em>) to organize the entry.</li>
+              <li><strong>Keywords:</strong> Enter words separated by commas (e.g., <code>tavern, inn, bar</code>). If the user types ANY of these, the entry triggers.</li>
+              <li><strong>Content:</strong> Write the description you want the bot to know (e.g., "The tavern is dark and smells of ale.").</li>
+            </ol>
+            <strong>Global Settings:</strong>
+            <ul>
+              <li><strong>Padded Matching:</strong> Adds spaces around keywords. Prevents "cat" matching inside "catch".</li>
+              <li><strong>Break Early:</strong> Stops scanning after the first match found (saves tokens).</li>
+            </ul>
+          </div>
+
+          <h3>Memory System</h3>
+          <p>Auto-detects user details from their messages.</p>
+          <div class="janitor-card">
+            <strong>Input Fields:</strong>
+            <ul>
+              <li><strong>Name Phrase:</strong> The trigger to detect a name (e.g., <code>my name is</code>). The script captures the text immediately following this phrase.</li>
+              <li><strong>Fact Keywords:</strong> Words that indicate a fact (e.g., <code>I live in, I work as</code>). The script captures the <em>entire sentence</em> containing these words.</li>
+            </ul>
+          </div>
+
+          <h3>Pacing System</h3>
+          <p>Controls the flow of the story based on message count.</p>
+          <div class="janitor-card">
+            <strong>Configuration Steps:</strong>
+            <ul>
+              <li><strong>Add Phase (Range):</strong> Use this for states that last a while.
+                <br><em>Input:</em> <strong>Min</strong> (Start msg) and <strong>Max</strong> (End msg).
+                <br><em>Result:</em> The content is injected for every message in that range.</li>
+              <li><strong>Add One-Time Event:</strong> Use this for a single story beat.
+                <br><em>Input:</em> <strong>Message #</strong> (Exact count).
+                <br><em>Result:</em> Triggers exactly once when that count is reached.</li>
+            </ul>
+          </div>
+
+          <h3>Tone & State</h3>
+          <p>Overrides personality based on keywords.</p>
+          <div class="janitor-card">
+            <strong>How to use:</strong>
+            <ul>
+              <li><strong>Keywords:</strong> Triggers like <code>insult, slap, attack</code>.</li>
+              <li><strong>Content:</strong> The reaction, e.g., <code>{{char}} becomes defensive and angry.</code></li>
+            </ul>
+            <p><em>Note: This content is appended to the Personality field, effectively overriding the character's base setting for that turn.</em></p>
+          </div>
+
+          <h3>Time & Environment</h3>
+          <p>Injects time-based descriptions.</p>
+          <div class="janitor-card warning">
+            <strong>Critical: Timezone Offset</strong>
+            <p>JanitorAI servers are in UTC. You MUST enter an offset (e.g., <code>-5</code> for EST, <code>-8</code> for PST) or the bot will think it is day when it is night.</p>
+          </div>
+          <div class="janitor-card">
+            <strong>Configuration:</strong>
+            <ul>
+              <li><strong>Start/End Hour:</strong> Uses 0-23 format.</li>
+              <li><strong>Wrap Around:</strong> You can set Start: 22 (10 PM) and End: 5 (5 AM). The script handles the midnight crossover automatically.</li>
+            </ul>
+          </div>
+
+          <h3>Ambient & Random</h3>
+          <div class="janitor-card">
+            <ul>
+              <li><strong>Ambient:</strong> Random flavor text (e.g., "Wind blows"). Controlled by the <strong>Probability %</strong> slider.</li>
+              <li><strong>Random Events:</strong> Reactions to specific inputs.
+                <br><em>Responses:</em> Separate options with a pipe <code>|</code> symbol (e.g., <code>He smiles|He frowns|He ignores you</code>). The bot picks one at random.</li>
+            </ul>
+          </div>
+
+          <h3>Combined Conditions</h3>
+          <p>Advanced rules that require multiple things to be true.</p>
+          <div class="janitor-card">
+            <strong>The "AND" Logic:</strong>
+            <p>All filled fields must match. Empty fields are ignored.</p>
+            <ul>
+              <li><strong>Keywords:</strong> User must say this...</li>
+              <li><strong>Min/Max Hr:</strong> AND it must be between these hours...</li>
+              <li><strong>Min Msgs:</strong> AND the chat must be this long.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <h2>3. Verification Tools</h2>
+          <h3>Trigger Analyzer</h3>
+          <p>Click this to scan your modules for conflicts (e.g., using the word "Fire" in both Lorebook and Tone modules).</p>
+
+          <h3>Script Tester</h3>
+          <p>A sandbox to test your script without breaking your bot.</p>
+          <div class="janitor-card warning">
+            <strong>Workflow Requirement:</strong>
+            <p>The tester reads the <strong>Output Code</strong>, not the Input Forms. You must click <strong>"Generate All Enabled Modules"</strong> before running a test.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script type="module" src="js/app.js"></script>
